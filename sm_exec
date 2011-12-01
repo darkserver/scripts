@@ -1,0 +1,31 @@
+#!/bin/bash
+# Replace these three settings.
+PROJDIR="/path/to/proj"
+PIDFILE="$PROJDIR/foo.pid"
+VENV="/path/to/venv"
+PORT=
+HOST=
+USER=
+MINSPARE=
+MAXSPARE=
+MAXCHILDREN=
+
+cd $PROJDIR
+case $1 in
+    start)
+        su $USER -c ". $VENV/bin/activate; exec python manage.py runfcgi host=$HOST port=$PORT pidfile=$PIDFILE minspare=$MINSPARE  maxspare=$MAXSPARE  maxchildren=$MAXCHILDREN"
+        ;;
+    stop)
+        if [ -f $PIDFILE ]; then
+            kill `cat -- $PIDFILE`
+            rm -f -- $PIDFILE
+        fi
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "usage: $APP {start|stop|restart}" ;;
+esac
+exit 0
