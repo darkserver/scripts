@@ -1,1 +1,3 @@
-skrypt inicjalizujacy Django
+script to initialize Django
+cp to /etc/init.d/
+chmod rwxr-xr-x
